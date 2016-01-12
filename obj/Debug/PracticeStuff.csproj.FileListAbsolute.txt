@@ -1,8 +1,0 @@
-c:\users\andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\bin\Debug\PracticeStuff.exe.config
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\obj\Debug\PracticeStuff.Form1.resources
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\obj\Debug\PracticeStuff.Properties.Resources.resources
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\obj\Debug\PracticeStuff.csproj.GenerateResource.Cache
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\bin\Debug\PracticeStuff.exe
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\bin\Debug\PracticeStuff.pdb
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\obj\Debug\PracticeStuff.exe
-C:\Users\Andromeda\documents\visual studio 2013\Projects\PracticeStuff\PracticeStuff\obj\Debug\PracticeStuff.pdb
