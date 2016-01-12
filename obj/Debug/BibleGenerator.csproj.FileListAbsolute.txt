@@ -1,0 +1,14 @@
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\BibleProject.exe.config
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.exe
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.pdb
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\Database\BibleBase.mdf
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\Database\BibleBase_log.ldf
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\BibleProject.exe
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\BibleProject.pdb
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.Forms.frm_MainWindow.resources
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.Properties.Resources.resources
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleGenerator.csproj.GenerateResource.Cache
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.Forms.frm_Legacy.resources
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.Forms.Usercontrols.MySQL.resources
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\obj\Debug\BibleProject.Forms.Usercontrols.SQLServer.resources
+C:\Users\Harmony\Documents\Visual Studio 2015\Projects\BibleProject\BibleProject\bin\Debug\MySql.Data.dll
