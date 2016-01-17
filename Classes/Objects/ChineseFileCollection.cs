@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BibleProject.Classes.Objects
 {
-    class ChineseFileCollection : IComparable<ChineseFileCollection>
+    class ChineseFileCollection
     {
         public ChineseFileCollection(int BookId, string BookName, string FileName)
         {
@@ -18,12 +18,5 @@ namespace BibleProject.Classes.Objects
         public int BookId;
         public string BookName;
         public string FileName;
-
-        public int CompareTo(ChineseFileCollection other)
-        {
-
-            return this.BookId.CompareTo(other.BookId);
-
-        }
     }
 }
