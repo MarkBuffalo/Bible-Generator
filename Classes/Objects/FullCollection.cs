@@ -7,10 +7,10 @@ using System.Collections.Generic;
 /// </summary>
 public class FullCollection
 {
-    public FullCollection(List<BibleCollection> _BibleCollection, List<BookCollection> _BookCollection)
+    public FullCollection(List<BibleCollection> BibleCollection, List<BookCollection> BookCollection)
     {
-        BibleCollection = _BibleCollection;
-        BookCollection = _BookCollection;
+        this.BibleCollection = BibleCollection;
+        this.BookCollection = BookCollection;
     }
     public List<BibleCollection> BibleCollection { get; set; }
     public List<BookCollection> BookCollection { get; set; }

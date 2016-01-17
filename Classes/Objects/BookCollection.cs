@@ -3,10 +3,10 @@
 /// </summary>
 public class BookCollection
 {
-    public BookCollection(int _Id, string _Book)
+    public BookCollection(int Id, string Book)
     {
-        Id = _Id;
-        Book = _Book;
+        this.Id = Id;
+        this.Book = Book;
     }
     public int Id;
     public string Book;

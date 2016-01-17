@@ -51,6 +51,7 @@ namespace BibleProject.Forms
             MemoryStorage.FullDataCollection = new List<FullCollection>();
             MemoryStorage.BibleLoaderClass = new FlatFileLoader();
             MemoryStorage.BibleLoaderClass.LoadBibleIntoMemory();
+            MemoryStorage.BibleLoaderClass.LoadChineseBibleIntoMemory();
             //Loader.LoadMemoryContentsIntoDatabase();
             this.cb_DatabaseType.SelectedIndex = 0;
 

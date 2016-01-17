@@ -10,11 +10,14 @@ using BibleProject.Classes;
 using BibleProject.Classes.Text;
 using System.Data.Sql;
 using BibleProject.Classes.Objects;
+using System.Text.RegularExpressions;
 
 namespace BibleProject.Classes.Text
 {
     class FlatFileLoader
     {
+
+
         /// <summary>
         /// Loads the data for that particular book into the Web Browser window.
         /// </summary>
@@ -78,7 +81,7 @@ namespace BibleProject.Classes.Text
             string book, word, lastBook = string.Empty;
             int chapter, verse = 0;
 
-            using (StreamReader r = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("BibleProject.BibleFormatFiles.kjvdat.txt")))
+            using (StreamReader r = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("BibleProject.BibleFlatFiles.English.kjvdat.txt")))
             {
                 string CurrentLine = String.Empty;
                 while ((CurrentLine = r.ReadLine()) != null)
@@ -103,6 +106,75 @@ namespace BibleProject.Classes.Text
                 }
                 MemoryStorage.FullDataCollection.Add(new FullCollection(MemoryStorage.Bible, MemoryStorage.BookList));
             }
+        }
+
+        List<ChineseFileCollection> cfc = new List<ChineseFileCollection>();
+
+        /// <summary>
+        /// Loads the entire Chinese bible into memory, in both English and Traditional Chinese.
+        /// </summary>
+        internal void LoadChineseBibleIntoMemory()
+        {
+            string[] EmbeddedTraditionalChineseFiles = TextConverters.GetAllEmbeddedResourcesByFolder("BibleProject.BibleFlatFiles.Chinese.TraditonalFiles");
+
+            string book;
+            int id;
+
+            foreach (string file in EmbeddedTraditionalChineseFiles)
+            {
+                string testId = Path.GetExtension(file).Replace(".", "");
+                id = (Convert.ToInt32(testId) - 1);
+                book = TextConverters.GetFullBookNameFromId(id);
+                cfc.Add(new ChineseFileCollection(id, book, file));
+            }
+
+
+
+            // list.OrderBy() is not working. Let's write our own natural order sorting algorithm, especially since every suggestion online appears to be incorrect... glare. May be a PEBKAC issue, but whatever.
+            List<ChineseFileCollection> cf = new List<ChineseFileCollection>();
+
+            int current = 0;
+            for (int i = 0; i < cfc.Count; i++)
+            {
+                foreach (var c in cfc)
+                {
+                    if (i == c.BookId)
+                    {
+                        cf.Add(new ChineseFileCollection(c.BookId, c.BookName, c.FileName));
+                    }
+                }
+                current++;
+            }
+
+
+            // The string for our new file.
+            StringBuilder NewFlatFileString = new StringBuilder();
+
+
+            cf.Count();
+
+            foreach (var c in cf)
+            {
+                id = c.BookId;
+                book = TextConverters.GetFullBookNameFromId(id);
+
+
+                using (StreamReader r = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(c.FileName), Encoding.GetEncoding("Big5")))
+                {
+                    string CurrentLine = String.Empty;
+
+                    // Get the Current line and convert it to UTF8
+                    while ((CurrentLine = r.ReadLine()) != null)
+                    {
+                        NewFlatFileString.Append(book + "|" + TextConverters.GetUTF8StringFromBig5String(CurrentLine.Replace(":", "|")) + "~" + Environment.NewLine);
+                    }
+                }
+            }
+            using (StreamWriter w = new StreamWriter(@"C:\Users\Harmony\Desktop\Chinese\chinesedat.txt"))
+            {
+                w.Write(NewFlatFileString.ToString());
+            }
+
         }
     }
 }
