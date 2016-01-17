@@ -170,7 +170,7 @@ namespace BibleProject.Classes.Text
                     }
                 }
             }
-            using (StreamWriter w = new StreamWriter(@"C:\Users\Harmony\Desktop\Chinese\chinesedat.txt"))
+            using (StreamWriter w = new StreamWriter(@"chinesedat.txt"))
             {
                 w.Write(NewFlatFileString.ToString());
             }
