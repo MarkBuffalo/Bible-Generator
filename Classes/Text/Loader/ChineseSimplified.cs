@@ -32,7 +32,7 @@ namespace BibleProject.Classes.Text.Loader
 
                     MemoryStorage.EnglishKjv.Add(new BibleCollection(book, chapter, verse, word));
                 }
-                MemoryStorage.FullDataCollection.Add(new FullCollection(MemoryStorage.EnglishKjv));
+                MemoryStorage.FullDataCollection.Add(new FullCollection(MemoryStorage.ChineseSimplified));
             }
         }
     }

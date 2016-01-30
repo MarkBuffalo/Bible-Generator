@@ -8,20 +8,22 @@ namespace BibleProject.Classes.Database.Queries
 {
     class MySql
     {
-        
-        public static string GetTableCreationString()
+
+        // This is all local. If you want to SQL inject yourself, be my guest. Neither MysQL nor SQL Server allow table names to be parameters. Only values.
+
+        public static string GetTableCreationString(QueryLanguage ql)
         {
-            return "USE biblebase; CREATE TABLE @Language (Id INT(6) AUTO_INCREMENT PRIMARY KEY, Book VARCHAR(20) NOT NULL, Chapter SMALLINT NOT NULL, Verse SMALLINT NOT NULL, Word VARCHAR(2000) NOT NULL);";
+            return "USE biblebase; CREATE TABLE " + ql.ToString() + " (Id INT(6) AUTO_INCREMENT PRIMARY KEY, Book VARCHAR(20) NOT NULL, Chapter SMALLINT NOT NULL, Verse SMALLINT NOT NULL, Word VARCHAR(2000) NOT NULL);";
         }
 
-        public static string GetDataInsertionString()
+        public static string GetDataInsertionString(QueryLanguage ql)
         {
-            return "INSERT INTO @Language (Book, Chapter, Verse, Word) VALUES(@Book, @Chapter, @Verse, @Word)";
+            return "INSERT INTO " + ql.ToString() + " (Book, Chapter, Verse, Word) VALUES(@Book, @Chapter, @Verse, @Word)";
         }
 
-        public static string CheckIfTableExists()
+        public static string CheckIfTableExists(QueryLanguage ql)
         {
-            return "SHOW TABLES LIKE '@Language'";
+            return "SHOW TABLES LIKE '" + ql.ToString() + "'";
         }
     }
 }

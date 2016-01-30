@@ -72,6 +72,7 @@ namespace BibleProject.Classes.Text.Loader
 
                         MemoryStorage.ChineseTraditional.Add(new BibleCollection(Book, Chapter, Verse, Word));
                     }
+                    MemoryStorage.FullDataCollection.Add(new FullCollection(MemoryStorage.ChineseTraditional));
                 }
             }
         }

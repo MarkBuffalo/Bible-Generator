@@ -23,13 +23,13 @@ namespace BibleProject.Classes.Database
         public static void Open(Forms.frm_MainWindow _mw, string server, string database, string username, string password, QueryLanguage ql)
         {
             mw = _mw;
-            using (MySqlConnection con = new MySqlConnection("Server="+server+";Database="+database+";Uid="+username+";Pwd="+password+";"))
+            using (MySqlConnection con = new MySqlConnection("Server=" + server + ";Database=" + database + ";Uid=" + username + ";Pwd=" + password + ";"))
             {
+                // Checks if table exists or not. If it doesn't, create it. If not, continue.
                 CheckIfMySqlTableExists(con, database, ql);
-                if (MySqlTableLength == 0)
-                {
-                    InsertIntoMySqlDatabase(con, ql);
-                }
+
+                // Inserts data into database
+                InsertIntoMySqlDatabase(con, ql);
             }
         }
 
@@ -39,11 +39,11 @@ namespace BibleProject.Classes.Database
             mw = _mw;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
+                // Checks if table exists or not. If it doesn't, create it. If not, continue.
                 CheckIfSqlServerTableExists(con, ql);
-                if (SqlServerTableLength == 0)
-                {
-                    InsertIntoSqlServerDatabase(con, ql);
-                }
+
+                // Inserts data into database
+                InsertIntoSqlServerDatabase(con, ql);
             }
         }
 
@@ -55,39 +55,37 @@ namespace BibleProject.Classes.Database
             {
                 con.Open();
             }
-            catch (MySqlException)
+            catch (MySqlException mse)
             {
-                MessageBox.Show("Unable to open connection to MySQL Database. Please recheck your credentials and try again", "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Unable to open connection to MySQL Database. Please recheck your credentials and try again:\n\n" + mse, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 mw.ResetButtons();
             }
 
-            using (MySqlCommand cmd = new MySqlCommand(Queries.MySql.CheckIfTableExists()))
+            using (MySqlCommand cmd = new MySqlCommand(Queries.MySql.CheckIfTableExists(ql)))
             {
                 cmd.Connection = con;
-                cmd.Parameters.AddWithValue("Language", ql.ToString());
 
                 MySqlDataReader r = cmd.ExecuteReader();
                 while (r.Read())
                 {
                     if (r.GetString(0).Length > 0)
                     {
-                        SqlServerTableLength = r.GetString(0).Length;
+                        MySqlTableLength = r.GetString(0).Length;
                     }
                 }
 
                 r.Close();
 
-                cmd.Parameters.AddWithValue("Language", ql.ToString());
                 if (MySqlTableLength == 0)
                 {
-                    cmd.CommandText = Queries.MySql.GetTableCreationString();
+                    cmd.CommandText = Queries.MySql.GetTableCreationString(ql);
                     try
                     {
                         cmd.ExecuteNonQuery();
                     }
                     catch (MySqlException mse)
                     {
-                        MessageBox.Show("Error when checking if table exists in MySQL Database: ", "Unable to check table" + Environment.NewLine + Environment.NewLine + mse, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show("Error when checking if table exists in MySQL Database: " + Environment.NewLine + Environment.NewLine + mse, "Unable to check table", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                         mw.ResetButtons();
                     }
                 }
@@ -109,10 +107,9 @@ namespace BibleProject.Classes.Database
                 mw.ResetButtons();
             }
 
-            string Query = Queries.SqlServer.CheckIfTableExists();
+            string Query = Queries.SqlServer.CheckIfTableExists(ql);
             using (SqlCommand cmd = new SqlCommand(Query))
             {
-                cmd.Parameters.AddWithValue("Language", ql.ToString());
                 try
                 {
                     cmd.Connection = con;
@@ -136,15 +133,14 @@ namespace BibleProject.Classes.Database
                 
                 if (SqlServerTableLength == 0)
                 {
-                    cmd.CommandText = Queries.SqlServer.GetTableCreationString();
-                    cmd.Parameters.AddWithValue("Language", ql.ToString());
+                    cmd.CommandText = Queries.SqlServer.GetTableCreationString(ql);
                     try
                     {
                         cmd.ExecuteNonQuery();
                     }
                     catch (SqlException se)
                     {
-                        MessageBox.Show("Error when checking if table exists in SQL Server Database: ", "Unable to check table" + Environment.NewLine + Environment.NewLine + se, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show("Error when checking if table exists in SQL Server Database: " + Environment.NewLine + Environment.NewLine + se, "Unable to check table", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                         mw.ResetButtons();
                     }
                 }
@@ -171,11 +167,10 @@ namespace BibleProject.Classes.Database
 
             foreach (var fc in LanguageCollection)
             {
-                using (MySqlCommand cmd = new MySqlCommand(Queries.MySql.GetDataInsertionString()))
+                using (MySqlCommand cmd = new MySqlCommand(Queries.MySql.GetDataInsertionString(ql)))
                 {
                     cmd.Connection = con;
                     cmd.CommandTimeout = 999999;
-                    cmd.Parameters.AddWithValue("Language", ql.ToString());
                     cmd.Parameters.AddWithValue("Book", fc.CurrentBook);
                     cmd.Parameters.AddWithValue("Chapter", fc.Chapter);
                     cmd.Parameters.AddWithValue("Verse", fc.Verse);
@@ -213,11 +208,10 @@ namespace BibleProject.Classes.Database
 
             foreach (var fc in LanguageCollection)
             {
-                using (SqlCommand cmd = new SqlCommand(Queries.SqlServer.GetDataInsertionString()))
+                using (SqlCommand cmd = new SqlCommand(Queries.SqlServer.GetDataInsertionString(ql)))
                 {
                     cmd.Connection = con;
                     cmd.CommandTimeout = 999999;
-                    cmd.Parameters.AddWithValue("Language", ql.ToString());
                     cmd.Parameters.AddWithValue("Book", fc.CurrentBook);
                     cmd.Parameters.AddWithValue("Chapter", fc.Chapter);
                     cmd.Parameters.AddWithValue("Verse", fc.Verse);

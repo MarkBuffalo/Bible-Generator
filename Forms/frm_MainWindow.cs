@@ -44,8 +44,7 @@ namespace BibleProject.Forms
         Usercontrols.MySQL mySql = new Usercontrols.MySQL();
         Usercontrols.SQLServer sqlServer = new Usercontrols.SQLServer();
         Usercontrols.FileLoading fileLoading = new Usercontrols.FileLoading();
-
-
+        
         private async void frm_MainWindow_Load(object sender, EventArgs e)
         {
             MemoryStorage.EnglishKjv = new List<BibleCollection>();

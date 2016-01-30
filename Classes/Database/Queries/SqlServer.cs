@@ -9,16 +9,18 @@ namespace BibleProject.Classes.Database.Queries
 {
     internal class SqlServer
     {
-        public static string CheckIfTableExists()
+
+        // This is all local. If you want to SQL inject yourself, be my guest. Neither MysQL nor SQL Server allow table names to be parameters. Only values.
+        public static string CheckIfTableExists(QueryLanguage ql)
         {
-            return "SELECT name FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[@Language]') AND type in (N'U')";
+            return "SELECT name FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[" + ql.ToString() + "]') AND type in (N'U')";
         }
 
-        public static string GetTableCreationString()
+        public static string GetTableCreationString(QueryLanguage ql)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("IF OBJECT_ID('[dbo].[@Language]', 'U') IS NOT NULL DROP TABLE [dbo].[@Language]; ");
-            sb.Append("CREATE TABLE [dbo].[@Language] (");
+            sb.Append("IF OBJECT_ID('[dbo].[" + ql.ToString() + "]', 'U') IS NOT NULL DROP TABLE [dbo].[" + ql.ToString() + "]; ");
+            sb.Append("CREATE TABLE [dbo].[" + ql.ToString() + "] (");
             sb.Append("    [Id]      INT            IDENTITY (1, 1) NOT NULL,");
             sb.Append("    [Book]    VARCHAR (20)   NOT NULL,");
             sb.Append("    [Chapter] INT	    NOT NULL,");
@@ -29,9 +31,9 @@ namespace BibleProject.Classes.Database.Queries
             return sb.ToString();
         }
 
-        public static string GetDataInsertionString()
+        public static string GetDataInsertionString(QueryLanguage ql)
         {
-            return "INSERT INTO [@Language] (Book, Chapter, Verse, Word) VALUES (@Book, @Chapter, @Verse, @Word)";
+            return "INSERT INTO [" + ql.ToString() + "] (Book, Chapter, Verse, Word) VALUES (@Book, @Chapter, @Verse, @Word)";
         }
     }
 }
