@@ -4,4 +4,4 @@ For MySQL servers, you must have the Server Name, Database Name, Username, and P
 
 For SQL servers, you must have a ready-made connection string. 
 
-Currently, most error-checking has been enabled, but SSL is not yet implemented. 
+Currently, most error-checking has been added, but SSL is not yet implemented. 
