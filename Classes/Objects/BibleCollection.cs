@@ -3,14 +3,14 @@
 /// </summary>
 public class BibleCollection
 {
-    public BibleCollection(int CurrentBook, int Chapter, int Verse, string Word)
+    public BibleCollection(string CurrentBook, int Chapter, int Verse, string Word)
     {
         this.CurrentBook = CurrentBook;
         this.Chapter = Chapter;
         this.Verse = Verse;
         this.Word = Word;
     }
-    public int CurrentBook;
+    public string CurrentBook;
     public int Chapter;
     public int Verse;
     public string Word;

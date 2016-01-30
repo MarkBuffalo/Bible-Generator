@@ -65,15 +65,20 @@
   <ItemGroup>
     <Compile Include="Classes\Database\Connection.cs" />
     <Compile Include="Classes\Database\Queries\MySql.cs" />
+    <Compile Include="Classes\Database\Queries\QueryLanguage.cs" />
     <Compile Include="Classes\Database\Queries\SqlServer.cs" />
     <Compile Include="Classes\Objects\BibleCollection.cs" />
     <Compile Include="Classes\Objects\BookCollection.cs" />
+    <Compile Include="Classes\Objects\ChineseBibleChapterCollection.cs" />
+    <Compile Include="Classes\Objects\ChineseFileCollection.cs" />
     <Compile Include="Classes\Objects\FullCollection.cs" />
-    <Compile Include="Classes\Text\FlatFileLoader.cs" />
-    <Compile Include="Classes\BibleSearcher.cs" />
+    <Compile Include="Classes\Text\CurrentlyUnused_LoadBookDataIntoBrowserWindow.cs" />
+    <Compile Include="Classes\Text\Loader\IFlatFile.cs" />
+    <Compile Include="Classes\Text\Loader\EnglishKjv.cs" />
+    <Compile Include="Classes\Text\Loader\ChineseTraditional.cs" />
+    <Compile Include="Classes\Text\Loader\ChineseSimplified.cs" />
     <Compile Include="Forms\FormExtensions\AsyncHelper.cs" />
     <Compile Include="Forms\FormExtensions\ComboBoxExtension.cs" />
-    <Compile Include="Classes\Objects\ListHandlers.cs" />
     <Compile Include="Classes\Text\TextConverters.cs" />
     <Compile Include="Classes\MemoryStorage.cs" />
     <Compile Include="Forms\frm_Legacy.cs">
@@ -87,6 +92,12 @@
     </Compile>
     <Compile Include="Forms\frm_MainWindow.Designer.cs">
       <DependentUpon>frm_MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Usercontrols\FileLoading.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Usercontrols\FileLoading.Designer.cs">
+      <DependentUpon>FileLoading.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Usercontrols\MySQL.cs">
       <SubType>UserControl</SubType>
@@ -108,6 +119,9 @@
     <EmbeddedResource Include="Forms\frm_MainWindow.resx">
       <DependentUpon>frm_MainWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Usercontrols\FileLoading.resx">
+      <DependentUpon>FileLoading.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Usercontrols\MySQL.resx">
       <DependentUpon>MySQL.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,6 +138,72 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1chron.13" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1cor.46" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1john.62" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1kings.11" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1peter.60" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1samuel.09" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1thess.52" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\1timot.54" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2chron.14" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2cor.47" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2john.63" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2kings.12" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2peter.61" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2samuel.10" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2thess.53" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\2timoth.55" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\3john.64" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\acts.44" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\amos.30" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\colos.51" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\daniel.27" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\deuteron.05" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\eccles.21" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\ephes.49" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\esther.17" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\exodus.02" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\ezekiel.26" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\ezra.15" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\galat.48" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\genesis.01" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\habakkuk.35" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\haggai.37" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\hebrews.58" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\hosea.28" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\isaiah.23" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\james.59" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\jeremiah.24" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\job.18" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\joel.29" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\john.43" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\jonah.32" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\joshua.06" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\jude.65" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\judges.07" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\lament.25" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\leviticu.03" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\luke.42" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\malachi.39" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\mark.41" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\matthew.40" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\micah.33" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\nahum.34" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\nehemiah.16" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\numbers.04" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\obadiah.31" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\philemon.57" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\philippi.50" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\proverb.20" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\psalms.19" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\revelat.66" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\romans.45" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\ruth.08" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\songofso.22" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\titus.56" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\zacariah.38" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\TraditonalFiles\zephania.36" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -138,10 +218,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BibleFormatFiles\kjvdat.txt" />
+    <EmbeddedResource Include="BibleFlatFiles\English\kjvdat.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bible.ico" />
+    <EmbeddedResource Include="BibleFlatFiles\Chinese\SimplifiedChinese.txt" />
     <Content Include="Database\BibleBase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -163,6 +244,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

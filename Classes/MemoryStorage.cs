@@ -13,11 +13,13 @@ namespace BibleProject.Classes
     /// </summary>
     class MemoryStorage
     {
-        public static List<BibleCollection> Bible { get; set; }
+
+        public static List<BibleCollection> EnglishKjv { get; set; }
+        public static List<BibleCollection> ChineseSimplified { get; set; }
+        public static List<BibleCollection> ChineseTraditional { get; set; }
+
         public static List<BookCollection> BookList { get; set; }
         public static List<FullCollection> FullDataCollection { get; set; }
-
-        public static FlatFileLoader BibleLoaderClass { get; set; }
 
         public static int FoundBook { get; set; }
         public static int FoundChapter { get; set; }
@@ -26,5 +28,7 @@ namespace BibleProject.Classes
         public static int FoundEndChapter { get; set; }
 
         public static string FoundWordQuery { get; set; }
+
+
     }
 }

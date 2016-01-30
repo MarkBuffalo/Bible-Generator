@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using BibleProject.Classes;
-using BibleProject.Classes.Text;
+using BibleProject.Classes.Text.Loader;
+using BibleProject.Classes.Database.Queries;
 using BibleProject.Classes.Objects;
 using BibleProject.Forms.FormExtensions;
 using BibleProject.Classes.Database;
@@ -34,7 +35,7 @@ namespace BibleProject.Forms
             wb_BibleBrowserWindow.Navigate("about:blank");
             if (wb_BibleBrowserWindow.Document != null)
             {
-            wb_BibleBrowserWindow.Document.Write(String.Empty);
+                wb_BibleBrowserWindow.Document.Write(String.Empty);
             }
             wb_BibleBrowserWindow.DocumentText = MemoryStorage.BibleLoaderClass.LoadBookData(id);
             this.Text = TextConverters.GetDisplayString(FullBookName) + " — King James Version";
@@ -42,19 +43,46 @@ namespace BibleProject.Forms
 
         Usercontrols.MySQL mySql = new Usercontrols.MySQL();
         Usercontrols.SQLServer sqlServer = new Usercontrols.SQLServer();
+        Usercontrols.FileLoading fileLoading = new Usercontrols.FileLoading();
 
 
-        private void frm_MainWindow_Load(object sender, EventArgs e)
+        private async void frm_MainWindow_Load(object sender, EventArgs e)
         {
-            MemoryStorage.Bible = new List<BibleCollection>();
+            MemoryStorage.EnglishKjv = new List<BibleCollection>();
+            MemoryStorage.ChineseSimplified = new List<BibleCollection>();
+            MemoryStorage.ChineseTraditional = new List<BibleCollection>();
+
             MemoryStorage.BookList = new List<BookCollection>();
             MemoryStorage.FullDataCollection = new List<FullCollection>();
-            MemoryStorage.BibleLoaderClass = new FlatFileLoader();
-            MemoryStorage.BibleLoaderClass.LoadBibleIntoMemory();
-            MemoryStorage.BibleLoaderClass.LoadChineseBibleIntoMemory();
-            //Loader.LoadMemoryContentsIntoDatabase();
-            this.cb_DatabaseType.SelectedIndex = 0;
 
+            this.p_Contents.Controls.Clear();
+            this.p_Contents.Controls.Add(fileLoading);
+
+
+            int curFile = 0;
+
+            fileLoading.SetProgressMaximum(2);
+
+
+            await Task.Run(() =>
+            {
+                List<IFlatFile> file = new List<IFlatFile>();
+
+                file.Add(new EnglishKjv());
+                file.Add(new ChineseSimplified());
+                file.Add(new ChineseTraditional());
+
+                foreach (var f in file)
+                {
+                    f.LoadIntoMemory();
+                    // Delegate the control as 'c', activate c's Method asynchronously without causing illegal cross-thread call.
+                    fileLoading.Async(c => { c.IncrementProgress(); });
+                    curFile++;
+                }
+            });
+
+            MessageBox.Show("Successfully loaded all files into memory");
+            this.cb_DatabaseType.SelectedIndex = 0;
         }
 
         /*
@@ -88,6 +116,13 @@ namespace BibleProject.Forms
         }
 
 
+        public void ResetButtons()
+        {
+            this.btn_Create.Async(c => { c.Enabled = true; });
+            this.pbar_CurrentInsertionProgress.Async(c => { c.Value = 0; });
+        }
+
+
         public void SetProgressBar()
         {
             this.pbar_CurrentInsertionProgress.Async(a => { a.PerformStep(); });
@@ -105,11 +140,22 @@ namespace BibleProject.Forms
                         string database = mySql.GetDatabase();
 
                         this.btn_Create.Enabled = false;
-                        this.pbar_CurrentInsertionProgress.Maximum = MemoryStorage.FullDataCollection[0].BibleCollection.Count();
+
+                        int MaximumEntries = 0;
+
+                        foreach (var fdc in MemoryStorage.FullDataCollection)
+                        {
+                            MaximumEntries += fdc.BibleCollection.Count();
+                        }
+
+                        this.pbar_CurrentInsertionProgress.Maximum = MaximumEntries;
 
                         await Task.Run(() =>
                         {
-                            DatabaseConnection.Open(this, server, database, username, password);
+                            for (int i = 0; i < MemoryStorage.FullDataCollection.Count(); i++)
+                            {
+                                DatabaseConnection.Open(this, server, database, username, password, (QueryLanguage)i);
+                            }
                         });
                         this.btn_Create.Enabled = true;
                         MessageBox.Show("Finished uploading to the MySQL database.", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -124,7 +170,11 @@ namespace BibleProject.Forms
                         this.btn_Create.Enabled = false;
                         await Task.Run(() =>
                         {
-                            DatabaseConnection.Open(this, connectionString);
+
+                            for (int i = 0; i < MemoryStorage.FullDataCollection.Count(); i++)
+                            {
+                                DatabaseConnection.Open(this, connectionString, (QueryLanguage)i);
+                            }
                         });
 
                         this.btn_Create.Enabled = true;

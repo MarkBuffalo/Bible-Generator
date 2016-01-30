@@ -7,12 +7,12 @@ using System.Collections.Generic;
 /// </summary>
 public class FullCollection
 {
-    public FullCollection(List<BibleCollection> BibleCollection, List<BookCollection> BookCollection)
+    public FullCollection(List<BibleCollection> BibleCollection)
     {
         this.BibleCollection = BibleCollection;
-        this.BookCollection = BookCollection;
+        //this.BookCollection = BookCollection;
     }
     public List<BibleCollection> BibleCollection { get; set; }
-    public List<BookCollection> BookCollection { get; set; }
+    //public List<BookCollection> BookCollection { get; set; }
 
 }
