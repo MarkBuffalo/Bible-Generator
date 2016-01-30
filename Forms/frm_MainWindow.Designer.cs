@@ -36,6 +36,7 @@
             this.cb_ForceSSL = new System.Windows.Forms.CheckBox();
             this.p_Contents = new System.Windows.Forms.Panel();
             this.pbar_CurrentInsertionProgress = new System.Windows.Forms.ProgressBar();
+            this.lbl_ProgressText = new System.Windows.Forms.Label();
             this.gb_DatabaseType.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,11 +109,21 @@
             this.pbar_CurrentInsertionProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbar_CurrentInsertionProgress.TabIndex = 4;
             // 
+            // lbl_ProgressText
+            // 
+            this.lbl_ProgressText.AutoSize = true;
+            this.lbl_ProgressText.Location = new System.Drawing.Point(12, 378);
+            this.lbl_ProgressText.Name = "lbl_ProgressText";
+            this.lbl_ProgressText.Size = new System.Drawing.Size(122, 17);
+            this.lbl_ProgressText.TabIndex = 5;
+            this.lbl_ProgressText.Text = "Finished x of y [%]";
+            // 
             // frm_MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(385, 380);
+            this.ClientSize = new System.Drawing.Size(385, 404);
+            this.Controls.Add(this.lbl_ProgressText);
             this.Controls.Add(this.pbar_CurrentInsertionProgress);
             this.Controls.Add(this.p_Contents);
             this.Controls.Add(this.cb_ForceSSL);
@@ -141,6 +152,7 @@
         private System.Windows.Forms.CheckBox cb_ForceSSL;
         private System.Windows.Forms.Panel p_Contents;
         private System.Windows.Forms.ProgressBar pbar_CurrentInsertionProgress;
+        private System.Windows.Forms.Label lbl_ProgressText;
     }
 }
 

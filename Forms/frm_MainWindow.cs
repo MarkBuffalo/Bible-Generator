@@ -44,6 +44,11 @@ namespace BibleProject.Forms
         Usercontrols.MySQL mySql = new Usercontrols.MySQL();
         Usercontrols.SQLServer sqlServer = new Usercontrols.SQLServer();
         Usercontrols.FileLoading fileLoading = new Usercontrols.FileLoading();
+
+
+        private int CurrentFile { get; set; }
+        private int MaximumEntries { get; set; }
+        private int CurrentLanguage { get; set; }
         
         private async void frm_MainWindow_Load(object sender, EventArgs e)
         {
@@ -57,8 +62,7 @@ namespace BibleProject.Forms
             this.p_Contents.Controls.Clear();
             this.p_Contents.Controls.Add(fileLoading);
 
-
-            int curFile = 0;
+            
 
             fileLoading.SetProgressMaximum(2);
 
@@ -76,7 +80,7 @@ namespace BibleProject.Forms
                     f.LoadIntoMemory();
                     // Delegate the control as 'c', activate c's Method asynchronously without causing illegal cross-thread call.
                     fileLoading.Async(c => { c.IncrementProgress(); });
-                    curFile++;
+                    CurrentFile++;
                 }
             });
 
@@ -121,11 +125,12 @@ namespace BibleProject.Forms
             this.pbar_CurrentInsertionProgress.Async(c => { c.Value = 0; });
         }
 
-
-        public void SetProgressBar()
+        public void UpdateQueryProgress()
         {
+            this.lbl_ProgressText.Async(c => { c.Text = "Current query: [" + MemoryStorage.CurrentQuery + " / " + MaximumEntries + "] (" + ((MemoryStorage.CurrentQuery / MaximumEntries) * 100) + "%) "; });
             this.pbar_CurrentInsertionProgress.Async(a => { a.PerformStep(); });
         }
+
 
         private async void btn_Create_Click(object sender, EventArgs e)
         {
@@ -140,7 +145,7 @@ namespace BibleProject.Forms
 
                         this.btn_Create.Enabled = false;
 
-                        int MaximumEntries = 0;
+                        MaximumEntries = 0;
 
                         foreach (var fdc in MemoryStorage.FullDataCollection)
                         {
@@ -167,8 +172,18 @@ namespace BibleProject.Forms
                         this.pbar_CurrentInsertionProgress.Maximum = MemoryStorage.FullDataCollection[0].BibleCollection.Count();
 
                         this.btn_Create.Enabled = false;
+
+                        MaximumEntries = 0;
+
+                        foreach (var fdc in MemoryStorage.FullDataCollection)
+                        {
+                            MaximumEntries += fdc.BibleCollection.Count();
+                        }
+
+
                         await Task.Run(() =>
                         {
+
 
                             for (int i = 0; i < MemoryStorage.FullDataCollection.Count(); i++)
                             {

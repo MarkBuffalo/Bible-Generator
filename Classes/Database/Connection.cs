@@ -178,13 +178,14 @@ namespace BibleProject.Classes.Database
                     try
                     {
                         cmd.ExecuteNonQuery();
-                        mw.SetProgressBar();
                     }
                     catch (MySqlException mse)
                     {
                         MessageBox.Show("Unable to insert data into MySQL database:" + Environment.NewLine + Environment.NewLine + mse, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         mw.ResetButtons();
                     }
+                    MemoryStorage.CurrentQuery++;
+                    mw.UpdateQueryProgress();
                 }
             }
             con.Close();
@@ -219,13 +220,14 @@ namespace BibleProject.Classes.Database
                     try
                     {
                         cmd.ExecuteNonQuery();
-                        mw.SetProgressBar();
                     }
                     catch (SqlException se)
                     {
                         MessageBox.Show("Unable to insert data into SQL Server Database:" + Environment.NewLine + Environment.NewLine + se, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         mw.ResetButtons();
                     }
+                    MemoryStorage.CurrentQuery++;
+                    mw.UpdateQueryProgress();
                 }
             }
             con.Close();

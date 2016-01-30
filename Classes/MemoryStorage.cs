@@ -29,6 +29,8 @@ namespace BibleProject.Classes
 
         public static string FoundWordQuery { get; set; }
 
+        public static int CurrentQuery { get; set; }
+
 
     }
 }
