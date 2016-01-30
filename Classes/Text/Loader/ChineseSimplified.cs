@@ -24,7 +24,7 @@ namespace BibleProject.Classes.Text.Loader
                 while ((CurrentLine = r.ReadLine()) != null)
                 {
 
-                    book = TextConverters.GetSimplifiedChineseBookNameFromId(TextConverters.GetBookIdFromAbbr(CurrentLine.Split(' ')[0]));
+                    book = TextConverters.GetSimplifiedChineseBookNameFromId(TextConverters.GetBookIdFromAbbreviation(CurrentLine.Split(' ')[0]));
                     chapter = Convert.ToInt32(CurrentLine.Split(':')[0].Split(' ')[1]);
                     verse = Convert.ToInt32(CurrentLine.Split(':')[1].Split(' ')[0]);
                     word = CurrentLine.Split(' ')[2];

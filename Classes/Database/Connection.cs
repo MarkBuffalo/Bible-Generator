@@ -77,6 +77,7 @@ namespace BibleProject.Classes.Database
 
                 r.Close();
 
+                cmd.Parameters.AddWithValue("Language", ql.ToString());
                 if (MySqlTableLength == 0)
                 {
                     cmd.CommandText = Queries.MySql.GetTableCreationString();
@@ -98,8 +99,18 @@ namespace BibleProject.Classes.Database
         // Sql Server
         private static void CheckIfSqlServerTableExists(SqlConnection con, QueryLanguage ql)
         {
-            con.Open();
-            using (SqlCommand cmd = new SqlCommand(Queries.SqlServer.CheckIfTableExists()))
+            try
+            {
+                con.Open();
+            }
+            catch (SqlException)
+            {
+                MessageBox.Show("Unable to open connection to SQL Server Database. Please recheck your Connection String and try again.", "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                mw.ResetButtons();
+            }
+
+            string Query = Queries.SqlServer.CheckIfTableExists();
+            using (SqlCommand cmd = new SqlCommand(Query))
             {
                 cmd.Parameters.AddWithValue("Language", ql.ToString());
                 try
@@ -126,6 +137,7 @@ namespace BibleProject.Classes.Database
                 if (SqlServerTableLength == 0)
                 {
                     cmd.CommandText = Queries.SqlServer.GetTableCreationString();
+                    cmd.Parameters.AddWithValue("Language", ql.ToString());
                     try
                     {
                         cmd.ExecuteNonQuery();

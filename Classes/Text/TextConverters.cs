@@ -73,33 +73,7 @@ namespace BibleProject.Classes.Text
             }
             return "";
         }
-
-        /// <summary>
-        /// Converts the current string from Big5 encoding to UTF-8
-        /// </summary>
-        /// <param name="Big5ChineseString">Big5 Chinese String</param>
-        /// <returns>UTF-8 Encoded Chinese characters</returns>
-        internal static String GetUTF8StringFromGB936String(string GB396ChineseString)
-        {
-            if (!String.IsNullOrEmpty(GB396ChineseString))
-            {
-                // The file is encoded using Big5 encoding. Let's convert this to UTF-8 so it can be read easier.
-                Encoding big5 = Encoding.GetEncoding("gb2312");
-                Encoding utf8 = Encoding.GetEncoding("utf-8");
-
-                // First, get the bytes, then convert them.
-                byte[] bytesBig5 = big5.GetBytes(GB396ChineseString);
-                byte[] bytesUtf8 = Encoding.Convert(big5, utf8, bytesBig5);
-
-                // Now get the characters for the UTF-8 bytes.
-                char[] chineseCharactersInUtf8 = new char[utf8.GetCharCount(bytesUtf8, 0, bytesUtf8.Length)];
-                utf8.GetChars(bytesUtf8, 0, bytesUtf8.Length, chineseCharactersInUtf8, 0);
-
-                return new string(chineseCharactersInUtf8);
-            }
-            return "";
-        }
-
+        
 
         /// <summary>
         /// Gets the full name of the Bible book in Simplified Chinese based on an id parameter.
@@ -181,6 +155,11 @@ namespace BibleProject.Classes.Text
         }
 
 
+        /// <summary>
+        /// Gets the full name of the Bible book in Traditional Chinese based on an id parameter.
+        /// </summary>
+        /// <param name="book">An assigned-integer of the Bible book</param>
+        /// <returns>The full name of the book in Chinese.</returns>
         internal static string GetTraditionalChineseBookNameFromId(int id)
         {
             switch (id)
@@ -342,7 +321,7 @@ namespace BibleProject.Classes.Text
         /// </summary>
         /// <param name="book">Book abbreviation in English</param>
         /// <returns>Book number.</returns>
-        internal static int GetBookIdFromAbbr(string book)
+        internal static int GetBookIdFromAbbreviation(string book)
         {
             switch (book.ToLower())
             {

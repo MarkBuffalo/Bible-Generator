@@ -72,7 +72,6 @@
     <Compile Include="Classes\Objects\ChineseBibleChapterCollection.cs" />
     <Compile Include="Classes\Objects\ChineseFileCollection.cs" />
     <Compile Include="Classes\Objects\FullCollection.cs" />
-    <Compile Include="Classes\Text\CurrentlyUnused_LoadBookDataIntoBrowserWindow.cs" />
     <Compile Include="Classes\Text\Loader\IFlatFile.cs" />
     <Compile Include="Classes\Text\Loader\EnglishKjv.cs" />
     <Compile Include="Classes\Text\Loader\ChineseTraditional.cs" />
