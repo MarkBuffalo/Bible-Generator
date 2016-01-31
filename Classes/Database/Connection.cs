@@ -231,12 +231,13 @@ namespace BibleProject.Classes.Database
             StringBuilder sb = new StringBuilder();
 
 
-
+            int currentQuery = 0;
+            
             foreach (var fc in LanguageCollection)
             {
-
                 sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word.Replace("'", "''") + "');" + Environment.NewLine);
 
+                currentQuery++;
                 MemoryStorage.CurrentQuery++;
                 mw.UpdateQueryProgress();
             }
@@ -248,22 +249,20 @@ namespace BibleProject.Classes.Database
                 w.Write(sb.ToString());
             }
 
-
-            using (SqlCommand cmd = new SqlCommand(sb.ToString()))
-            {
-                try
+                using (SqlCommand cmd = new SqlCommand(sb.ToString(), con))
                 {
-                    cmd.ExecuteNonQueryAsync();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (SqlException se)
+                    {
+                        MessageBox.Show("Unable to insert data into SQL Server Database:" + Environment.NewLine + Environment.NewLine + se, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        mw.ResetButtons();
+                    }
+                    MemoryStorage.CurrentQuery++;
+                    mw.UpdateQueryProgress();
                 }
-                catch (SqlException se)
-                {
-                    MessageBox.Show("Unable to insert data into SQL Server Database:" + Environment.NewLine + Environment.NewLine + se, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    mw.ResetButtons();
-                }
-                MemoryStorage.CurrentQuery++;
-                mw.UpdateQueryProgress();
-            }
-
             con.Close();
         }
     }
