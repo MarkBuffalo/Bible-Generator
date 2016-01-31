@@ -22,10 +22,10 @@ namespace BibleProject.Classes.Database.Queries
             sb.Append("IF OBJECT_ID('[dbo].[" + ql.ToString() + "]', 'U') IS NOT NULL DROP TABLE [dbo].[" + ql.ToString() + "]; ");
             sb.Append("CREATE TABLE [dbo].[" + ql.ToString() + "] (");
             sb.Append("    [Id]      INT            IDENTITY (1, 1) NOT NULL,");
-            sb.Append("    [Book]    VARCHAR (20)   NOT NULL,");
+            sb.Append("    [Book]    NVARCHAR (20)   NOT NULL,");
             sb.Append("    [Chapter] INT	    NOT NULL,");
             sb.Append("    [Verse]   INT	    NOT NULL,");
-            sb.Append("    [Word]    VARCHAR (2000) NOT NULL,");
+            sb.Append("    [Word]    NVARCHAR (2000) NOT NULL,");
             sb.Append("    PRIMARY KEY CLUSTERED ([Id] ASC)");
             sb.Append(");");
             return sb.ToString();
@@ -33,7 +33,7 @@ namespace BibleProject.Classes.Database.Queries
 
         public static string GetDataInsertionString(QueryLanguage ql)
         {
-            return "INSERT INTO [" + ql.ToString() + "] (Book, Chapter, Verse, Word) VALUES (@Book, @Chapter, @Verse, @Word)";
+            return "INSERT INTO [" + ql.ToString() + "] (Book, Chapter, Verse, Word) VALUES (N'@Book', @Chapter, @Verse, N'@Word')";
         }
     }
 }

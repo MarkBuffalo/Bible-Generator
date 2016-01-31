@@ -24,7 +24,7 @@ namespace BibleProject.Classes.Database
         public static void Open(Forms.frm_MainWindow _mw, string server, string database, string username, string password, QueryLanguage ql)
         {
             mw = _mw;
-            using (MySqlConnection con = new MySqlConnection("Server=" + server + ";Database=" + database + ";Uid=" + username + ";Pwd=" + password + ";"))
+            using (MySqlConnection con = new MySqlConnection("Server=" + server + ";Database=" + database + ";Uid=" + username + ";Pwd=" + password + "; CharSet=utf8;"))
             {
                 // Checks if table exists or not. If it doesn't, create it. If not, continue.
                 CheckIfMySqlTableExists(con, database, ql);
@@ -235,7 +235,7 @@ namespace BibleProject.Classes.Database
             
             foreach (var fc in LanguageCollection)
             {
-                sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word.Replace("'", "''") + "');" + Environment.NewLine);
+                sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES(N'" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", N'" + fc.Word.Replace("'", "''") + "');" + Environment.NewLine);
 
                 currentQuery++;
                 MemoryStorage.CurrentQuery++;
@@ -243,11 +243,6 @@ namespace BibleProject.Classes.Database
             }
 
             sb.Append(";" + Environment.NewLine + Environment.NewLine);
-
-            using (StreamWriter w = new StreamWriter("debug-me.sql", true))
-            {
-                w.Write(sb.ToString());
-            }
 
                 using (SqlCommand cmd = new SqlCommand(sb.ToString(), con))
                 {
