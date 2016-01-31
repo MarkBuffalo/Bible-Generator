@@ -52,6 +52,7 @@ namespace BibleProject.Forms
         
         private async void frm_MainWindow_Load(object sender, EventArgs e)
         {
+            this.StartPosition = FormStartPosition.CenterScreen;
             MemoryStorage.EnglishKjv = new List<BibleCollection>();
             MemoryStorage.ChineseSimplified = new List<BibleCollection>();
             MemoryStorage.ChineseTraditional = new List<BibleCollection>();

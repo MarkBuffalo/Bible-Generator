@@ -29,6 +29,7 @@ namespace BibleProject.Classes.Database
                 // Checks if table exists or not. If it doesn't, create it. If not, continue.
                 CheckIfMySqlTableExists(con, database, ql);
 
+                MySqlTableLength = 0;
                 // Inserts data into database
                 InsertIntoMySqlDatabase(con, ql);
             }
@@ -42,6 +43,8 @@ namespace BibleProject.Classes.Database
             {
                 // Checks if table exists or not. If it doesn't, create it. If not, continue.
                 CheckIfSqlServerTableExists(con, ql);
+
+                SqlServerTableLength = 0;
 
                 // Inserts data into database
                 InsertIntoSqlServerDatabase(con, ql);
@@ -174,7 +177,7 @@ namespace BibleProject.Classes.Database
             {
                 if (!firstStringFinished)
                 {
-                    sb.Append(Queries.MySql.GetDataInsertionString(ql).Replace("@Book", "'" + fc.CurrentBook + "'").Replace("@Chapter", "'" + fc.Chapter + "'").Replace("@Verse", "'" + fc.Verse + "'").Replace("@Word", "'" + fc.Word + "'"));
+                    sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word + "')");
                     firstStringFinished = true;
                 }
                 else
@@ -184,9 +187,9 @@ namespace BibleProject.Classes.Database
                 MemoryStorage.CurrentQuery++;
                 mw.UpdateQueryProgress();
             }
-            sb.Append(";");
+            sb.Append(";" + Environment.NewLine + Environment.NewLine);
 
-            using (StreamWriter w = new StreamWriter("debug-me.sql"))
+            using (StreamWriter w = new StreamWriter("debug-me.sql", true))
             {
                 w.Write(sb.ToString());
             }
