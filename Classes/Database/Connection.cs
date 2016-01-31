@@ -177,12 +177,12 @@ namespace BibleProject.Classes.Database
             {
                 if (!firstStringFinished)
                 {
-                    sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word + "')");
+                    sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) " + Environment.NewLine + " VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", \"" + fc.Word + "\")" + Environment.NewLine);
                     firstStringFinished = true;
                 }
                 else
                 {
-                    sb.Append(", ('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word + "')");
+                    sb.Append(", ('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", \"" + fc.Word + "\")" + Environment.NewLine);
                 }
                 MemoryStorage.CurrentQuery++;
                 mw.UpdateQueryProgress();
@@ -212,7 +212,7 @@ namespace BibleProject.Classes.Database
             con.Close();
         }
 
-        // Sql Server
+        // Sql Server. Extremely slow. Switch to StringBuilder or Bulk Insert.
         private static void InsertIntoSqlServerDatabase(SqlConnection con, QueryLanguage ql)
         {
             try
