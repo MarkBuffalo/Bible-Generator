@@ -84,6 +84,14 @@ namespace BibleProject.Forms
                 }
             });
 
+
+
+            foreach (var fdc in MemoryStorage.FullDataCollection)
+            {
+                MaximumEntries += fdc.BibleCollection.Count();
+            }
+            this.pbar_CurrentInsertionProgress.Maximum = MaximumEntries;
+
             MessageBox.Show("Successfully loaded all files into memory");
             this.cb_DatabaseType.SelectedIndex = 0;
         }
@@ -127,7 +135,8 @@ namespace BibleProject.Forms
 
         public void UpdateQueryProgress()
         {
-            this.lbl_ProgressText.Async(c => { c.Text = "Current query: [" + MemoryStorage.CurrentQuery + " / " + MaximumEntries + "] (" + ((MemoryStorage.CurrentQuery / MaximumEntries) * 100) + "%) "; });
+            int PercentDone = ((MemoryStorage.CurrentQuery / MaximumEntries) * 100);
+            this.lbl_ProgressText.Async(c => { c.Text = "Current query: [" + MemoryStorage.CurrentQuery + " / " + MaximumEntries + "] (" + PercentDone + "%) "; });
             this.pbar_CurrentInsertionProgress.Async(a => { a.PerformStep(); });
         }
 
@@ -144,16 +153,7 @@ namespace BibleProject.Forms
                         string database = mySql.GetDatabase();
 
                         this.btn_Create.Enabled = false;
-
-                        MaximumEntries = 0;
-
-                        foreach (var fdc in MemoryStorage.FullDataCollection)
-                        {
-                            MaximumEntries += fdc.BibleCollection.Count();
-                        }
-
-                        this.pbar_CurrentInsertionProgress.Maximum = MaximumEntries;
-
+                        
                         await Task.Run(() =>
                         {
                             for (int i = 0; i < MemoryStorage.FullDataCollection.Count(); i++)
@@ -169,22 +169,12 @@ namespace BibleProject.Forms
                     {
                         string connectionString = sqlServer.GetConnectionString();
 
-                        this.pbar_CurrentInsertionProgress.Maximum = MemoryStorage.FullDataCollection[0].BibleCollection.Count();
 
                         this.btn_Create.Enabled = false;
-
-                        MaximumEntries = 0;
-
-                        foreach (var fdc in MemoryStorage.FullDataCollection)
-                        {
-                            MaximumEntries += fdc.BibleCollection.Count();
-                        }
-
-
+                        
+                        
                         await Task.Run(() =>
                         {
-
-
                             for (int i = 0; i < MemoryStorage.FullDataCollection.Count(); i++)
                             {
                                 DatabaseConnection.Open(this, connectionString, (QueryLanguage)i);

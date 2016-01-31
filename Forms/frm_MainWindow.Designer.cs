@@ -114,18 +114,18 @@
             this.lbl_ProgressText.AutoSize = true;
             this.lbl_ProgressText.Location = new System.Drawing.Point(12, 378);
             this.lbl_ProgressText.Name = "lbl_ProgressText";
-            this.lbl_ProgressText.Size = new System.Drawing.Size(122, 17);
+            this.lbl_ProgressText.Size = new System.Drawing.Size(12, 17);
             this.lbl_ProgressText.TabIndex = 5;
-            this.lbl_ProgressText.Text = "Finished x of y [%]";
+            this.lbl_ProgressText.Text = " ";
             // 
             // frm_MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(385, 404);
+            this.Controls.Add(this.p_Contents);
             this.Controls.Add(this.lbl_ProgressText);
             this.Controls.Add(this.pbar_CurrentInsertionProgress);
-            this.Controls.Add(this.p_Contents);
             this.Controls.Add(this.cb_ForceSSL);
             this.Controls.Add(this.gb_DatabaseType);
             this.Controls.Add(this.btn_Create);

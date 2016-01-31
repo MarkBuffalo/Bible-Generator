@@ -8,6 +8,7 @@ using BibleProject.Classes.Text;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using BibleProject.Classes.Database.Queries;
+using System.IO;
 
 namespace BibleProject.Classes.Database
 {
@@ -165,29 +166,46 @@ namespace BibleProject.Classes.Database
             List<BibleCollection> LanguageCollection = new List<BibleCollection>();
             LanguageCollection = MemoryStorage.FullDataCollection[(int)ql].BibleCollection;
 
+            StringBuilder sb = new StringBuilder();
+
+            bool firstStringFinished = false;
+
             foreach (var fc in LanguageCollection)
             {
-                using (MySqlCommand cmd = new MySqlCommand(Queries.MySql.GetDataInsertionString(ql)))
+                if (!firstStringFinished)
                 {
-                    cmd.Connection = con;
-                    cmd.CommandTimeout = 999999;
-                    cmd.Parameters.AddWithValue("Book", fc.CurrentBook);
-                    cmd.Parameters.AddWithValue("Chapter", fc.Chapter);
-                    cmd.Parameters.AddWithValue("Verse", fc.Verse);
-                    cmd.Parameters.AddWithValue("Word", fc.Word);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (MySqlException mse)
-                    {
-                        MessageBox.Show("Unable to insert data into MySQL database:" + Environment.NewLine + Environment.NewLine + mse, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        mw.ResetButtons();
-                    }
-                    MemoryStorage.CurrentQuery++;
-                    mw.UpdateQueryProgress();
+                    sb.Append(Queries.MySql.GetDataInsertionString(ql).Replace("@Book", "'" + fc.CurrentBook + "'").Replace("@Chapter", "'" + fc.Chapter + "'").Replace("@Verse", "'" + fc.Verse + "'").Replace("@Word", "'" + fc.Word + "'"));
+                    firstStringFinished = true;
+                }
+                else
+                {
+                    sb.Append(", ('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word + "')");
+                }
+                MemoryStorage.CurrentQuery++;
+                mw.UpdateQueryProgress();
+            }
+            sb.Append(";");
+
+            using (StreamWriter w = new StreamWriter("debug-me.sql"))
+            {
+                w.Write(sb.ToString());
+            }
+
+            using (MySqlCommand cmd = new MySqlCommand(sb.ToString()))
+            {
+                cmd.Connection = con;
+                cmd.CommandTimeout = 999999;
+                try
+                {
+                    cmd.ExecuteNonQueryAsync();
+                }
+                catch (MySqlException mse)
+                {
+                    MessageBox.Show("Unable to insert data into MySQL database:" + Environment.NewLine + Environment.NewLine + mse, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    mw.ResetButtons();
                 }
             }
+
             con.Close();
         }
 

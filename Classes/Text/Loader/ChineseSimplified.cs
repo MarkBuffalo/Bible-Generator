@@ -30,7 +30,7 @@ namespace BibleProject.Classes.Text.Loader
                     word = CurrentLine.Split(' ')[2];
 
 
-                    MemoryStorage.EnglishKjv.Add(new BibleCollection(book, chapter, verse, word));
+                    MemoryStorage.ChineseSimplified.Add(new BibleCollection(book, chapter, verse, word));
                 }
                 MemoryStorage.FullDataCollection.Add(new FullCollection(MemoryStorage.ChineseSimplified));
             }

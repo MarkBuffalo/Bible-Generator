@@ -18,7 +18,7 @@ namespace BibleProject.Classes.Database.Queries
 
         public static string GetDataInsertionString(QueryLanguage ql)
         {
-            return "INSERT INTO " + ql.ToString() + " (Book, Chapter, Verse, Word) VALUES(@Book, @Chapter, @Verse, @Word)";
+            return "INSERT INTO " + ql.ToString() + " (Book, Chapter, Verse, Word) VALUES(@Book, @Chapter, @Verse, @Word) ";
         }
 
         public static string CheckIfTableExists(QueryLanguage ql)
