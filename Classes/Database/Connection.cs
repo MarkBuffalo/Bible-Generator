@@ -134,7 +134,7 @@ namespace BibleProject.Classes.Database
                 }
 
                 r.Close();
-                
+
                 if (SqlServerTableLength == 0)
                 {
                     cmd.CommandText = Queries.SqlServer.GetTableCreationString(ql);
@@ -164,7 +164,7 @@ namespace BibleProject.Classes.Database
                 MessageBox.Show("Unable to open connection to MySQL Database while attempting to insert data. Please recheck your credentials and try again", "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 mw.ResetButtons();
             }
-            
+
 
             List<BibleCollection> LanguageCollection = new List<BibleCollection>();
             LanguageCollection = MemoryStorage.FullDataCollection[(int)ql].BibleCollection;
@@ -228,29 +228,42 @@ namespace BibleProject.Classes.Database
             List<BibleCollection> LanguageCollection = new List<BibleCollection>();
             LanguageCollection = MemoryStorage.FullDataCollection[(int)ql].BibleCollection;
 
+            StringBuilder sb = new StringBuilder();
+
+
+
             foreach (var fc in LanguageCollection)
             {
-                using (SqlCommand cmd = new SqlCommand(Queries.SqlServer.GetDataInsertionString(ql)))
-                {
-                    cmd.Connection = con;
-                    cmd.CommandTimeout = 999999;
-                    cmd.Parameters.AddWithValue("Book", fc.CurrentBook);
-                    cmd.Parameters.AddWithValue("Chapter", fc.Chapter);
-                    cmd.Parameters.AddWithValue("Verse", fc.Verse);
-                    cmd.Parameters.AddWithValue("Word", fc.Word);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (SqlException se)
-                    {
-                        MessageBox.Show("Unable to insert data into SQL Server Database:" + Environment.NewLine + Environment.NewLine + se, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        mw.ResetButtons();
-                    }
-                    MemoryStorage.CurrentQuery++;
-                    mw.UpdateQueryProgress();
-                }
+
+                sb.Append("INSERT INTO " + ql.ToString() + "(Book, Chapter, Verse, Word) VALUES('" + fc.CurrentBook + "', " + fc.Chapter + ", " + fc.Verse + ", '" + fc.Word.Replace("'", "''") + "');" + Environment.NewLine);
+
+                MemoryStorage.CurrentQuery++;
+                mw.UpdateQueryProgress();
             }
+
+            sb.Append(";" + Environment.NewLine + Environment.NewLine);
+
+            using (StreamWriter w = new StreamWriter("debug-me.sql", true))
+            {
+                w.Write(sb.ToString());
+            }
+
+
+            using (SqlCommand cmd = new SqlCommand(sb.ToString()))
+            {
+                try
+                {
+                    cmd.ExecuteNonQueryAsync();
+                }
+                catch (SqlException se)
+                {
+                    MessageBox.Show("Unable to insert data into SQL Server Database:" + Environment.NewLine + Environment.NewLine + se, "Potential User Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    mw.ResetButtons();
+                }
+                MemoryStorage.CurrentQuery++;
+                mw.UpdateQueryProgress();
+            }
+
             con.Close();
         }
     }
