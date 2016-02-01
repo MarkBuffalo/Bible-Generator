@@ -22,5 +22,5 @@ Fortunately, adding new languages has been made easier.
 
  - Simply implement the `IFlatFile` interface and do what's necessary to load the appropriate values into the `BibleCollection` object, then insert the collection into the `FullCollection` object named in `MemoryStorage.cs`.
  - Check `EnglishKjv.cs`, `ChineseSimplified.cs`, and `ChineseTraditional.cs` for examples. 
- - Note that you may need to use/convert to the appropriate encoding: if the values show up as `???` while watching variables in the debugger, your encoding is not correct. This means it won't insert correctly, and you'll end up with question marks in the database.
+ - Note that, for non-ASCII languages, you may need to use/convert to the appropriate encoding: if the values show up as `???` while watching variables in the debugger, your encoding is not correct. This means it won't insert correctly, and you'll end up with question marks in the database.
  - Once you have loaded the Bible data into the `BibleCollection` object, the program will take care of the rest for you. If I recall correctly, you may need to fix the table naming setup. This will be an easy fix.
