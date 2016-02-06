@@ -24,11 +24,19 @@ namespace BibleProject.Classes.Text.Loader
                 while ((CurrentLine = r.ReadLine()) != null)
                 {
 
-                    book = TextConverters.GetSimplifiedChineseBookNameFromId(TextConverters.GetBookIdFromAbbreviation(CurrentLine.Split(' ')[0]));
-                    chapter = Convert.ToInt32(CurrentLine.Split(':')[0].Split(' ')[1]);
-                    verse = Convert.ToInt32(CurrentLine.Split(':')[1].Split(' ')[0]);
-                    word = CurrentLine.Split(' ')[2];
-
+                    book = TextConverters.GetSimplifiedChineseBookNameFromId(TextConverters.GetBookIdFromAbbreviation(CurrentLine.Split('|')[0]));
+                    chapter = Convert.ToInt32(CurrentLine.Split(' ')[0].Split('|')[1]);
+                    verse = Convert.ToInt32(CurrentLine.Split(' ')[0].Split('|')[2]);
+                    try
+                    {
+                        word = CurrentLine.Split(' ')[1];
+                    }
+                    // There's no line there because the verse has been removed to make sense in this Language. 
+                    // The removed verse is still intact; it's only combined with the previous verse.
+                    catch (IndexOutOfRangeException)
+                    {
+                        word = " ";
+                    }
 
                     MemoryStorage.ChineseSimplified.Add(new BibleCollection(book, chapter, verse, word));
                 }
